@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 def home(request):
     posts = Post.objects.all()
-    return render(request, '', {'posts' : posts})
+    return render(request, 'posts/home.html', {'posts' : posts})
 
 def register(request):
     if request.method == 'POST':
@@ -19,7 +19,7 @@ def register(request):
             return redirect('login')
     else:
         form = CustomUserCreationForm()
-    return redirect(request, '', {'form': form})
+    return render(request, 'registration/register.html', {'form': form})
 
 # @login_required
 def post_create(request):
@@ -33,7 +33,7 @@ def post_create(request):
             return redirect('home')
     else:
         form = PostForm()
-    return render (request, '', {'form' : form})
+    return render (request, 'posts/post_create.html', {'form' : form})
 
 @login_required
 def post_edit(request, post_id):
@@ -51,7 +51,7 @@ def post_edit(request, post_id):
         
     else:
         form = PostForm(instance=post)
-    return (request, '', {'form' : form, 'post': post})
+    return (request, 'posts/post_edit.html', {'form' : form, 'post': post})
 
 
 @login_required
@@ -66,4 +66,4 @@ def post_delete(request, post_id):
         post.delete()
         messages.success(request, 'Post deleted successfully')
         return redirect('home')
-    return render(request, '', {'post': post})
+    return render(request, 'posts/post_delete.html', {'post': post})
